@@ -1,5 +1,6 @@
 package br.com.lima.codechella;
 
+import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import java.time.LocalDate;
@@ -7,6 +8,7 @@ import java.time.LocalDate;
 @Table("eventos")
 public class Evento {
 
+    @Id
     private Long id;
 
     private TipoEvento tipo;
