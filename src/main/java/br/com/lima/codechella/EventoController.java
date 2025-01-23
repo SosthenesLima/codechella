@@ -30,4 +30,9 @@ public class EventoController {
         return servico.cadastrar(dto);
     }
 
+    @DeleteMapping("/{id}")
+    public Mono<Void> excluir(@PathVariable Long id) {
+        return servico.excluir(id);
+    }
+
 }
