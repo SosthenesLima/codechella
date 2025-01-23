@@ -35,4 +35,8 @@ public class EventoController {
         return servico.excluir(id);
     }
 
+    @PutMapping("{id}")
+    public Mono<EventoDto> alterar(@PathVariable Long id, @RequestBody EventoDto dto) {
+        return servico.alterar(id, dto);
+    }
 }
