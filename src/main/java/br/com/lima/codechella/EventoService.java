@@ -19,10 +19,6 @@ public class EventoService {
                 .map(EventoDto::toDto);
     }
 
-    public Flux<EventoDto> obterPorTipo(){
-        return repositorio.findAll()
-                .map(EventoDto::toDto);
-    }
 
     public Mono<EventoDto> obterPorId(Long id) {
         return repositorio.findById(id)
@@ -53,7 +49,9 @@ public class EventoService {
                 .map(EventoDto::toDto);
     }
 
-    public Publisher<?> obterPorTipo(String tipo) {
-        return repositorio.findAll();
+    public Flux<EventoDto> obterPorTipo(String tipo){
+        TipoEvento tipoEvento = TipoEvento.valueOf(tipo.toUpperCase());
+        return repositorio.findByTipo(tipoEvento)
+                .map(EventoDto::toDto);
     }
 }

@@ -42,7 +42,7 @@ public class EventoController {
     @PostMapping
     public Mono<EventoDto> cadastrar(@RequestBody EventoDto dto) {
         return servico.cadastrar(dto)
-                .doOnSuccess(e -> eventoSink.tryEmitNext(e);
+                .doOnSuccess(e -> eventoSink.tryEmitNext(e));
     }
 
     @DeleteMapping("/{id}")
