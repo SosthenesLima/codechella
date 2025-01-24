@@ -8,23 +8,30 @@ import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
 import java.awt.*;
+import java.time.Duration;
 
 @RestController
 @RequestMapping("/eventos")
 public class EventoController {
 
 
-    private  final EventoService servico;
-    private final Sinks.Many<EventoDto> eventosSink;
+    private final EventoService servico;
+    private final Sinks.Many<EventoDto> eventoSink;
 
     public EventoController(EventoService servico) {
         this.servico = servico;
-        this.eventosSink = Sinks.many().multicast().onBackpressureBuffer();
+        this.eventoSink = Sinks.many().multicast().onBackpressureBuffer();
     }
 
     @GetMapping //(produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public Flux<EventoDto> obterTodos() {
         return servico.obterTodos();
+    }
+
+    @GetMapping(value = "/categoria/{tipo}", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<EventoDto> obterPorTipo(@PathVariable String tipo) {
+        return Flux.merge(servico.obterPorTipo(tipo), eventoSink.asFlux())
+                .delayElements(Duration.ofSeconds(4));
     }
 
     @GetMapping("/{id}")
@@ -34,7 +41,8 @@ public class EventoController {
 
     @PostMapping
     public Mono<EventoDto> cadastrar(@RequestBody EventoDto dto) {
-        return servico.cadastrar(dto);
+        return servico.cadastrar(dto)
+                .doOnSuccess(e -> eventoSink.tryEmitNext(e);
     }
 
     @DeleteMapping("/{id}")

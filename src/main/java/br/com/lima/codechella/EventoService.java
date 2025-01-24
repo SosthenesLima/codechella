@@ -1,5 +1,6 @@
 package br.com.lima.codechella;
 
+import org.reactivestreams.Publisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -14,6 +15,11 @@ public class EventoService {
     private EventoRepository repositorio;
 
     public Flux<EventoDto> obterTodos() {
+        return repositorio.findAll()
+                .map(EventoDto::toDto);
+    }
+
+    public Flux<EventoDto> obterPorTipo(){
         return repositorio.findAll()
                 .map(EventoDto::toDto);
     }
@@ -45,5 +51,9 @@ public class EventoService {
                     return repositorio.save(eventoExistente);
                 })
                 .map(EventoDto::toDto);
+    }
+
+    public Publisher<?> obterPorTipo(String tipo) {
+        return repositorio.findAll();
     }
 }
