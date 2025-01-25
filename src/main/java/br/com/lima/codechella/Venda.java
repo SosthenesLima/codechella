@@ -9,6 +9,31 @@ public class Venda {
     private Long id;
     private Long ingressoId;
     private int total;
-
     //getters e setters
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getIngressoId() {
+        return ingressoId;
+    }
+
+    public void setIngressoId(Long ingressoId) {
+        this.ingressoId = ingressoId;
+    }
+
+    public int getTotal() {
+        return total;
+    }
+
+    public void setTotal(int total) {
+        this.total = total;
+    }
+
+
 }

@@ -4,6 +4,7 @@ package br.com.lima.codechella;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -12,6 +13,9 @@ import reactor.core.publisher.Mono;
 public class IngressoService {
     @Autowired
     private IngressoRepository repositorio;
+
+    @Autowired
+    private VendaRepository vendaRepository;
 
     public Flux<IngressoDto> obterTodos() {
         return  repositorio.findAll()
@@ -45,5 +49,19 @@ public class IngressoService {
                     return repositorio.save(ingresso);
                 })
                 .map(IngressoDto::toDto);
+    }
+
+    @Transactional
+    public Mono<IngressoDto> comprar(CompraDto dto) {
+        return repositorio.findById(dto.ingressoId())
+                .flatMap(ingresso -> {
+                    Venda venda = new Venda();
+                    venda.setIngressoId(ingresso.getId());
+                    venda.setTotal(dto.total());
+                    return vendaRepository.save(venda).then(Mono.defer(() -> {
+                        ingresso.setTotal(ingresso.getTotal() - dto.total());
+                        return repositorio.save(ingresso);
+                    }));
+                }).map(IngressoDto::toDto);
     }
 }

@@ -31,6 +31,11 @@ public class EventoService {
                 .map(EventoDto::toDto);
     }
 
+    public Mono<EventoDto> comprar(EventoDto dto) {
+        return repositorio.save(dto.toEntity())
+                .map(EventoDto::toDto);
+    }
+
     public Mono<Void> excluir(Long id) {
         return repositorio.findById(id)
                 .flatMap(repositorio::delete);

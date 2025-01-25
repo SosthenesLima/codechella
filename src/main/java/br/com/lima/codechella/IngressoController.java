@@ -1,9 +1,12 @@
 package br.com.lima.codechella;
 
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
+
+import java.time.Duration;
 
 @RestController
 @RequestMapping("/ingressos")
@@ -46,5 +49,10 @@ public class IngressoController {
     public Mono<IngressoDto> comprar(@RequestBody CompraDto dto) {
         return servico.comprar(dto)
                 .doOnSuccess(i -> ingressoSink.tryEmitNext(i));
+    }
+    @GetMapping(value = "/{id}/disponivel", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    public Flux<IngressoDto> totalDisponivel(@PathVariable Long id) {
+        return Flux.merge(servico.obterPorId(id), ingressoSink.asFlux())
+                .delayElements(Duration.ofSeconds(4));
     }
 }
