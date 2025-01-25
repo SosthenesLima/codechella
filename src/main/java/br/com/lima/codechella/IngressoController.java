@@ -41,4 +41,10 @@ public class IngressoController {
     public Mono<IngressoDto> alterar(@PathVariable Long id, @RequestBody IngressoDto dto){
         return servico.alterar(id, dto);
     }
+
+    @PostMapping("/compra")
+    public Mono<IngressoDto> comprar(@RequestBody CompraDto dto) {
+        return servico.comprar(dto)
+                .doOnSuccess(i -> ingressoSink.tryEmitNext(i));
+    }
 }
