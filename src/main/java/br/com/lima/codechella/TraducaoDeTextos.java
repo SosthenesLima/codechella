@@ -18,11 +18,12 @@ public class TraducaoDeTextos {
         req.add("text", texto);
         req.add("target_lang", idioma);
 
-        webClient.post()
+        return webClient.post()
                 .header("Authorization", "DeepL-Auth-Key " + System.getenv("DEEPL_APIKEY"))
                 .body(BodyInserters.fromFormData(req))
                 .retrieve()
                 .bodyToMono(Traducao.class)
-                 .map(Traducao::getTexto);
-    }
+                .map(Traducao::getTexto);
+        }
+
 }
