@@ -1,3 +1,7 @@
+/*
+By Sósthenes
+ */
+
 package br.com.lima.codechella;
 
 import org.junit.jupiter.api.Test;
