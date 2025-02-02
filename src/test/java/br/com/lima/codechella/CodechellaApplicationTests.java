@@ -43,16 +43,17 @@ class CodechellaApplicationTests {
 	void buscarEvento() {
 		EventoDto dto = new EventoDto(13L, TipoEvento.SHOW, "The Weeknd", LocalDate.parse("2025-11-02"), "Um show eletrizante ao ar livre com muitos efeitos especiais.");
 
-		webTestClient.post().uri("/eventos").bodyValue(dto)
+		webTestClient.get().uri("/eventos")
 				.exchange()
-				.expectStatus().isCreated()
-				.expectBody(EventoDto.class)
+				.expectStatus().is2xxSuccessful()
+				.expectBodyList(EventoDto.class)
 				.value(response -> {
-					assertNotNull(response.id());
-					assertEquals(dto.tipo(), response.tipo());
-					assertEquals(dto.nome(), response.nome());
-					assertEquals(dto.data(), response.data());
-					assertEquals(dto.descricao(), response.descricao());
+					EventoDto eventoRespose = response.get(12);
+					assertEquals(dto.id(), eventoRespose.id());
+					assertEquals(dto.tipo(), eventoRespose.tipo());
+					assertEquals(dto.nome(), eventoRespose.nome());
+					assertEquals(dto.data(), eventoRespose.data());
+					assertEquals(dto.descricao(), eventoRespose.descricao());
 				});
 	}
 }
