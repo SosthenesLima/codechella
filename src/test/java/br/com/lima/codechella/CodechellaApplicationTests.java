@@ -24,7 +24,7 @@ class CodechellaApplicationTests {
 
 	@Test
 	void cadastraNovoEvento() {
-		EventoDto dto = new EventoDto(null, TipoEvento.SHOW, "Kiss", LocalDate.parse("2025-02-19"), "Show da melhor banda que existe");
+		EventoDto dto = new EventoDto(null, TipoEvento.SHOW, "Kiss", LocalDate.parse("2025-11-02"), "Show da melhor banda que existe");
 
 		webTestClient.post().uri("/eventos").bodyValue(dto)
 				.exchange()
@@ -48,7 +48,7 @@ class CodechellaApplicationTests {
 				.expectStatus().is2xxSuccessful()
 				.expectBodyList(EventoDto.class)
 				.value(response -> {
-					EventoDto eventoRespose = response.get(12);
+					EventoDto eventoRespose = response.get(13);
 					assertEquals(dto.id(), eventoRespose.id());
 					assertEquals(dto.tipo(), eventoRespose.tipo());
 					assertEquals(dto.nome(), eventoRespose.nome());
