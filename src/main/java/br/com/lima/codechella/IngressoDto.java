@@ -1,3 +1,7 @@
+/*
+  By Sósthenes Oliveira lima
+ */
+
 package br.com.lima.codechella;
 
 public record IngressoDto(Long id,
