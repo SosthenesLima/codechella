@@ -1,3 +1,7 @@
+/*
+  By Sósthenes Oliveira Lima
+ */
+
 package br.com.lima.codechella;
 
 import org.reactivestreams.Publisher;
